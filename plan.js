@@ -303,15 +303,38 @@ function mpText(plan) {
 }
 
 /* ---------- 6. Έτοιμο πρόγραμμα 3 ημερών ---------- */
+/* Γράμμωση, όχι όγκος: κυρίως μηχανήματα (εύκολη τεχνική), ολόσωμο 3 φορές, 2–3 σετ, 10–15 επαναλήψεις,
+   έμφαση σε πλάτη, οπίσθιους ώμους και γλουτούς (αντίβαρο στο καθιστικό γραφείο), κοιλιακούς, και 20′ περπάτημα σε κλίση. */
 const MP_PROGRAM = {
-  id: 'p_fullbody_abc', name: 'Ολόσωμο A/B/C · 3 ημέρες (γράμμωση)', sessionsPerWeek: 3,
+  id: 'p_lean3', name: 'Γράμμωση · 3 ημέρες (A/B/C)', sessionsPerWeek: 3,
   days: [
-    { id: 'd_fb_a', name: 'A · Δευτέρα', items: [['leg_press',3,10,12,120,1,2],['chest_press',3,8,12,120,1,2],['lat_pulldown',3,10,12,90,1,2],['rdl',3,10,10,120,1,3],['shoulder_machine',2,10,12,90,1,2],['crunch',3,12,15,60,0,2]] },
-    { id: 'd_fb_b', name: 'B · Τετάρτη', items: [['goblet',3,8,10,120,1,3],['cable_row',3,10,12,90,1,2],['incline_db',3,8,12,120,1,2],['leg_curl',3,12,12,90,0,2],['lat_raise',3,12,15,60,0,2],['plank',3,30,45,60,null,null]] },
-    { id: 'd_fb_c', name: 'C · Παρασκευή', items: [['leg_press',3,12,15,120,1,2],['lat_pulldown',3,8,10,120,1,2],['db_bench',3,8,12,120,1,2],['hip_thrust',3,10,12,90,1,2],['face_pull',2,15,15,60,0,2],['db_curl',2,12,12,60,0,2],['pushdown',2,12,12,60,0,2]] },
+    { id: 'd_l3_a', name: 'A · Δευτέρα', items: [['leg_press',3,10,12,120,1,2],['chest_press',3,10,12,90,1,2],['lat_pulldown',3,10,12,90,1,2],['leg_curl',3,12,15,75,1,2],['face_pull',2,15,20,60,1,2],['plank',3,30,45,60,null,null],['treadmill',1,20,20,0,null,null]] },
+    { id: 'd_l3_b', name: 'B · Τετάρτη', items: [['goblet',3,10,12,90,1,2],['shoulder_machine',3,10,12,90,1,2],['cable_row',3,10,12,90,1,2],['rdl',3,10,12,120,1,2],['rear_delt',2,15,20,60,1,2],['crunch',2,12,15,60,1,2],['treadmill',1,20,20,0,null,null]] },
+    { id: 'd_l3_c', name: 'C · Παρασκευή', items: [['hip_thrust',3,10,12,90,1,2],['incline_db',3,10,12,90,1,2],['lat_pulldown',3,10,12,90,1,2],['leg_ext',2,12,15,60,1,2],['lat_raise',2,12,15,60,1,2],['side_plank',2,30,30,45,null,null],['treadmill',1,20,20,0,null,null]] },
   ],
 };
-const MP_TG = { leg_press: 'Leg Press', chest_press: 'Chest Press', lat_pulldown: 'Lat Machine', rdl: 'Μπάρα ή αλτήρες', shoulder_machine: 'Shoulder Press', crunch: 'Abdominal Crunch', goblet: 'Αλτήρας', cable_row: 'Low Row', incline_db: 'Αλτήρες, πάγκος 30°', leg_curl: 'Leg Curl', lat_raise: 'Αλτήρες', plank: 'Στρώμα', db_bench: 'Αλτήρες ή Chest Press', hip_thrust: 'Μπάρα ή Glute', face_pull: 'Τροχαλία με σχοινί', db_curl: 'Αλτήρες', pushdown: 'Τροχαλία' };
+const MP_TG = { leg_press: 'Leg Press', chest_press: 'Chest Press', lat_pulldown: 'Lat Machine', rdl: 'Αλτήρες', shoulder_machine: 'Shoulder Press', crunch: 'Abdominal Crunch ή στρώμα', goblet: 'Αλτήρας', cable_row: 'Low Row', incline_db: 'Αλτήρες, πάγκος 30°', leg_curl: 'Leg Curl', leg_ext: 'Leg Extension', lat_raise: 'Αλτήρες', plank: 'Στρώμα', side_plank: 'Στρώμα', hip_thrust: 'Glute ή μπάρα σε πάγκο', face_pull: 'Τροχαλία με σχοινί', rear_delt: 'Pectoral / Rear Delt', treadmill: 'Διάδρομος (Run / Jog)' };
+/* Μία γραμμή τεχνικής για κάθε άσκηση. */
+const MP_CUE = {
+  leg_press: 'Πέλματα στο πλάτος των ώμων. Κατέβα μέχρι τα γόνατα να κάνουν ορθή γωνία, μην τα κλειδώνεις στο πάνω μέρος.',
+  chest_press: 'Λαβές στο ύψος του στήθους, πλάτη κολλητά στο κάθισμα. Σπρώξε μπροστά, γύρνα αργά.',
+  lat_pulldown: 'Τράβα τη μπάρα στο πάνω στήθος με τους αγκώνες προς τα κάτω. Μη γέρνεις πολύ πίσω.',
+  leg_curl: 'Λύγισε τα γόνατα ως το τέλος και γύρνα αργά, σε 2 δευτερόλεπτα.',
+  face_pull: 'Σχοινί στο ύψος του προσώπου. Τράβα προς τα μάτια με αγκώνες ψηλά. Ισιώνει τους ώμους από το γραφείο.',
+  plank: 'Στους αγκώνες, σώμα ίσια γραμμή. Σφίξε κοιλιά και γλουτούς, ανάσανε κανονικά.',
+  goblet: 'Αλτήρας κάθετα στο στήθος. Κάτσε σαν σε καρέκλα, πλάτη ίσια, φτέρνες κάτω.',
+  shoulder_machine: 'Λαβές στο ύψος των ώμων. Σπρώξε πάνω χωρίς να καμπουριάζεις τη μέση.',
+  cable_row: 'Στήθος ψηλά. Τράβα τους αγκώνες πίσω και σφίξε τις ωμοπλάτες μεταξύ τους.',
+  rdl: 'Γόνατα ελαφρώς λυγισμένα. Σπρώξε τη λεκάνη πίσω, αλτήρες κοντά στα πόδια, πλάτη ίσια. Τέντωμα πίσω στους μηρούς.',
+  rear_delt: 'Κάθισε ανάποδα στο μηχάνημα. Χέρια σχεδόν τεντωμένα, άνοιξε προς τα πίσω. Ελαφρύ βάρος.',
+  crunch: 'Κύρτωσε τον κορμό σαν να φέρνεις τα πλευρά στη λεκάνη. Μικρή, ελεγχόμενη κίνηση.',
+  hip_thrust: 'Πλάτη στον πάγκο, σπρώξε από τις φτέρνες. Σφίξε γλουτούς 1″ στην κορυφή.',
+  incline_db: 'Πάγκος 30°. Αλτήρες στο ύψος του στήθους, σπρώξε πάνω. Αν δεν θες αλτήρες: Chest Press.',
+  leg_ext: 'Τέντωσε τα γόνατα ως το τέλος, κράτα 1″, γύρνα αργά.',
+  lat_raise: 'Ελαφριοί αλτήρες. Σήκωσε στα πλάγια ως το ύψος των ώμων, αγκώνες ελαφρώς λυγισμένοι.',
+  side_plank: 'Στον αγκώνα, σώμα ίσιο. 30″ κάθε πλευρά.',
+  treadmill: 'Κλίση 8–12%, 5–5,5 km/h, χωρίς να κρατιέσαι. Γρήγορο περπάτημα, όχι τρέξιμο.',
+};
 function mpProgramObj() {
   return { id: MP_PROGRAM.id, name: MP_PROGRAM.name, sessionsPerWeek: MP_PROGRAM.sessionsPerWeek,
     days: MP_PROGRAM.days.map(d => ({ id: d.id, name: d.name, items: d.items.filter(([ex]) => exById(ex)).map(([exId, sets, lo, hi, rest, rirLo, rirHi]) => ({ exId, sets, lo, hi, rest, rirLo: rirLo ?? '', rirHi: rirHi ?? '', inc: null })) })) };
@@ -379,25 +402,8 @@ function mpWeekTab() {
     <ul class="list inner">${m.items.map(([f, g]) => `<li><div class="item"><span class="grow"><span class="nm">${esc(f.name)}</span><br><span class="sub">${mpQty(f, g)} · Π ${fmt(f.p * g / 100)} Υ ${fmt(f.c * g / 100)} Λ ${fmt(f.f * g / 100)}</span></span><span class="kc">${fmt(f.kcal * g / 100)}</span></div></li>`).join('')}</ul></section>`; }).join('')}
   <p class="small muted" style="margin:4px 4px 0">Το <b>+</b> σε κάθε γεύμα το καταγράφει στη σημερινή μέρα.</p>`;
 }
-function mpGymTab() {
-  const all = programs(), has = all.list.some(x => x.id === MP_PROGRAM.id), active = all.active === MP_PROGRAM.id;
-  const row = ([ex, sets, lo, hi, rest]) => { const e = exById(ex); if (!e) return '';
-    return `<li><div class="item"><span class="grow"><span class="nm">${esc(e.name)}</span><br><span class="sub">${esc(MP_TG[ex] || '')} · διάλειμμα ${rest >= 120 ? rest / 60 + '′' : rest + '″'}</span></span><span class="kc">${sets}×${lo === hi ? lo : `${lo}–${hi}`}${ex === 'plank' ? '″' : ''}</span></div></li>`; };
-  return `<section class="sec"><h2>Ολόσωμο A/B/C · 3 ημέρες</h2>
-    <p class="small">Τρεις ολόσωμες προπονήσεις την εβδομάδα, περίπου 65′ η καθεμία. Για γράμμωση και δύναμη, όχι όγκο: σε έλλειμμα θερμίδων τα βάρη κρατούν τους μύες και χάνεις λίπος.</p>
-    <button class="btn ${active ? '' : 'pri'}" data-act="mpProgram" style="width:100%;margin-top:10px">${active ? '✓ Είναι το ενεργό σου πρόγραμμα' : has ? 'Κάν’ το ενεργό πρόγραμμα' : 'Πρόσθεσέ το στα προγράμματά μου'}</button>
-    <p class="small muted" style="margin-bottom:0">Μετά το βρίσκεις στην Ημέρα → Άσκηση, με χρονόμετρο διαλείμματος και προτάσεις βάρους.</p></section>
-  ${MP_PROGRAM.days.map((d, i) => `<section class="mealcard open"><div class="mc-h"><span class="mc-ic"><b>${'ABC'[i]}</b></span><div class="grow"><h3>${esc(d.name)}</h3><span class="small muted">${d.items.length} ασκήσεις · ~65′</span></div></div><ul class="list inner">${d.items.map(row).join('')}</ul></section>`).join('')}
-  <section class="sec"><h2>Κάθε προπόνηση</h2><ul class="list inner mp-tl" style="border-top:0">
-    ${[['8′', 'Ζέσταμα: ποδήλατο ή ελλειπτικό χαλαρά, και ένα ελαφρύ σετ 12 επαναλήψεων στην πρώτη άσκηση ποδιών και πάνω κορμού.'], ['45′', 'Βάρη με τη σειρά του προγράμματος. Σταμάτα κάθε σετ όταν θα μπορούσες να κάνεις ακόμα 1–2 καθαρές επαναλήψεις.'], ['10′', 'Περπάτημα σε διάδρομο, κλίση 8–10%, 5–5,5 km/h. Πάντα μετά τα βάρη.'], ['+1 ώρα', 'Γεύμα ή shake με 25–40 g πρωτεΐνη.']].map(([a, b]) => `<li><div class="item"><span class="mp-time">${a}</span><span class="grow small">${b}</span></div></li>`).join('')}</ul></section>
-  <section class="sec"><h2>Πρόοδος</h2><ul class="guide">
-    <li>Όταν βγάζεις το πάνω όριο επαναλήψεων σε όλα τα σετ, ανέβασε ένα βήμα βάρους και ξεκίνα από το κάτω όριο.</li>
-    <li>Σε έλλειμμα θερμίδων, το να κρατάς τα ίδια βάρη είναι επιτυχία.</li>
-    <li>Κάθε 7η εβδομάδα ελαφριά: ίδιες ασκήσεις, μισά σετ.</li>
-    <li>Χαμένη προπόνηση; Κάν’ την την επόμενη μέρα. Ποτέ δύο τη μέρα.</li>
-    <li>Πόνος σε άρθρωση (όχι κάψιμο στον μυ) σημαίνει σταματάς την άσκηση.</li></ul></section>
-  <section class="sec"><h2>Technogym</h2><p class="small">Το Technogym app δεν εισάγει πρόγραμμα από αρχείο. Ζήτα από τον γυμναστή να περάσει τις 3 ημέρες στο προφίλ σου στο Mywellness, ή φτιάξ’ τες στο app άσκηση-άσκηση. Δίπλα σε κάθε άσκηση γράφει το μηχάνημα της σειράς Selection.</p></section>`;
-}
+/* Η καρτέλα «Άσκηση» δείχνει το ίδιο περιεχόμενο με την οθόνη «Γυμναστήριο» της απλής προβολής (simple.js). */
+function mpGymTab() { return typeof spGymHTML === 'function' ? spGymHTML() : ''; }
 function mpGuideTab() {
   const tl = [['07:00','Ξύπνημα, 500 ml νερό, ζύγισμα μετά την τουαλέτα'],['07:30','Πρωινό με 30–40 g πρωτεΐνη'],['08:15','10′ περπάτημα στο φως της μέρας'],['10:30','Καφές και νερό· τελευταίος καφές ως τις 14:00'],['13:00','Μεσημεριανό: πρωτεΐνη, άμυλο, λαχανικά'],['16:30','Σνακ ή φρούτο πριν από το γυμναστήριο'],['18:00','Γυμναστήριο (Δευ/Τετ/Παρ) ή 40′ γρήγορο περπάτημα'],['19:10','Shake πρωτεΐνης μετά το γυμναστήριο'],['20:00','Βραδινό, 2,5 ώρες πριν τον ύπνο'],['22:30','Οθόνες χαμηλά, ετοιμασία για αύριο'],['23:00','Ύπνος· στόχος 7,5–8 ώρες']];
   const supp = [['Whey isolate','1 μεζούρα, 25–30 g πρωτεΐνη','Πιάνεις τον στόχο πρωτεΐνης με λίγες θερμίδες. Το isolate έχει ελάχιστη λακτόζη.'],['Κρεατίνη μονοϋδρική','3–5 g κάθε μέρα','Κρατά δύναμη και μύες σε έλλειμμα. Στην αρχή +1–2 kg νερό στους μύες, όχι λίπος.'],['Psyllium','5 g σε μεγάλο ποτήρι νερό','+4 g φυτικές ίνες, χορτασμός, καλύτερο έντερο. 2 ώρες μακριά από φάρμακα.'],['Βιταμίνη D3','1.000–2.000 IU','Μόνο αν η εξέταση αίματος δείξει χαμηλή τιμή.']];

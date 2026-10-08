@@ -6,6 +6,17 @@
 
 ## Τι κάνει
 
+Ανοίγει σε **απλή προβολή** με τέσσερις οθόνες:
+
+| Οθόνη | Τι έχει |
+| --- | --- |
+| Σήμερα | Θερμίδες και πρωτεΐνη που απομένουν, ζύγιση, τα 4 γεύματα της ημέρας με «Το έφαγα» (ή «Άλλο» για άλλη επιλογή), η σημερινή προπόνηση, ύπνος και βήματα |
+| Μενού | 3 απλά πιάτα για κάθε γεύμα από καθημερινά ελληνικά τρόφιμα, με μερίδες που προσαρμόζονται στον στόχο θερμίδων· τι τρως ελεύθερα, τι προσέχεις, μαγείρεμα 2 φορές την εβδομάδα, λίστα για το σούπερ μάρκετ |
+| Άσκηση | Πρόγραμμα γράμμωσης 3 ημερών (A/B/C) κυρίως σε μηχανήματα Technogym, με οδηγίες για κάθε άσκηση και απλή καταγραφή κιλών και επαναλήψεων με χρονόμετρο διαλείμματος |
+| Πρόοδος | Βάρος (μέσος όρος 7 ημερών), απόσταση από τον στόχο, ρυθμός, γράφημα 12 εβδομάδων, σύνοψη εβδομάδας |
+
+Όλες οι αναλυτικές λειτουργίες παραμένουν. Με Προφίλ → Προβολή → «Πλήρης» το κάτω μενού γίνεται:
+
 | Καρτέλα | Τι έχει |
 | --- | --- |
 | Ημέρα | Καταγραφή γευμάτων (αναζήτηση στα ελληνικά ή greeklish, barcode, ελεύθερο κείμενο), άσκηση με χρονόμετρο διαλείμματος, βήματα, ύπνος, ζύγιση |
@@ -36,7 +47,8 @@ python3 tools/build.py
 | Αρχείο | Ρόλος |
 | --- | --- |
 | `index.html` | Η εφαρμογή: έλεγχοι δεδομένων, υπολογισμοί στόχων, αποθήκευση (IndexedDB με εφεδρικό localStorage), οθόνες |
-| `plan.js` | Καρτέλα «Πλάνο», επιπλέον ελληνικά τρόφιμα, φυτικές ίνες για τα ενσωματωμένα τρόφιμα |
+| `plan.js` | Καρτέλα «Πλάνο», επιπλέον ελληνικά τρόφιμα, φυτικές ίνες για τα ενσωματωμένα τρόφιμα, το έτοιμο πρόγραμμα γυμναστηρίου |
+| `simple.js` | Απλή προβολή: Σήμερα, Μενού, Άσκηση, Πρόοδος |
 | `ui.css` | Διάταξη για κινητό: πρώτα η κάρτα θερμίδων, σταθερές καρτέλες, μεγαλύτερα κουμπιά, παράθυρα από κάτω |
 | `ui.js` | Σάρωση αριστερά/δεξιά για αλλαγή ημέρας, σύρσιμο προς τα κάτω για κλείσιμο παραθύρου |
 | `sw.js` | Service worker για offline λειτουργία |
@@ -49,4 +61,4 @@ python3 tools/build.py
 
 ---
 
-**English:** Greek-language PWA for fat loss: food, weight, sleep and training logs, a 7-day meal planner built from the foods you actually eat, a 3-day full-body program, and habit guides. Everything is stored locally on the device. Deploy by pushing this folder to a GitHub repository and enabling GitHub Pages from the `main` branch root. Run `python3 tools/build.py` after any change. MIT licensed.
+**English:** Greek-language PWA for fat loss. Opens in a simple mode (Today, Menu, Training, Progress): a fixed menu of everyday Greek meals that scale to your calorie target and log with one tap, a 3-day machine-based full-body program with a simple set logger, and a weight-trend view. The full mode keeps food, weight, sleep and training logs, a 7-day meal planner built from the foods you actually eat, and habit guides. Everything is stored locally on the device. Deploy by pushing this folder to a GitHub repository and enabling GitHub Pages from the `main` branch root. Run `python3 tools/build.py` after any change. MIT licensed.

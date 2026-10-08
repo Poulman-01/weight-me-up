@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-JMbikGSD7ZNkG1bNYw08xrOKjO/INC7cxrIPV+Fj4VY=' 'sha256-HYkg+4uzTPdo34Tq80vhJbICYDzuI+m7vNuWcJz4a4U=' 'sha256-RfPA1QR6c0Leq70jBh8GW6X0MimecEUlV20rfM0JRz4=' 'sha256-G/FpVKSvqnkDRQPWppBBs+SMKYCduNz0Y7ECbzFky+o='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://images.openfoodfacts.org https://static.openfoodfacts.org https://world.openfoodfacts.org; connect-src 'self' https://world.openfoodfacts.org; worker-src 'self'; manifest-src 'self'; media-src 'self' blob: mediastream:; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-qHqauweSD92gTfCFHGxOYJYPu5MX0uBCnivKselrmrc=' 'sha256-HYkg+4uzTPdo34Tq80vhJbICYDzuI+m7vNuWcJz4a4U=' 'sha256-RfPA1QR6c0Leq70jBh8GW6X0MimecEUlV20rfM0JRz4=' 'sha256-LZEr3DtSyzORJMU2NMrVMSuwQATvBIRFi3moVQhrZU8='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://images.openfoodfacts.org https://static.openfoodfacts.org https://world.openfoodfacts.org; connect-src 'self' https://world.openfoodfacts.org; worker-src 'self'; manifest-src 'self'; media-src 'self' blob: mediastream:; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F3F5F8" media="(prefers-color-scheme: light)">
@@ -1041,6 +1041,9 @@ const Reliability = (() => {
         if(!obj(v)){err(k);continue;}for(const [d,c] of Object.entries(v)){if(!date(d)||!obj(c)){err(k);continue;}for(const f of ['sleep','energy','hunger','perf','stress'])if(!blank(c[f])&&!inRange(c[f],1,5,true))err(k+'.'+f);if(c.note!==undefined&&(typeof c.note!=='string'||c.note.length>2000))err(k+'.note');}
       } else if(k==='mealplan') {
         if(!obj(v)||!Array.isArray(v.picks)||v.picks.length>5000||v.picks.some(x=>!id(x))||(v.gym!==undefined&&(!Array.isArray(v.gym)||v.gym.length>7||v.gym.some(x=>!inRange(x,0,6,true))))||(v.seed!==undefined&&!inRange(v.seed,0,1e9,true))||(v.treats!==undefined&&typeof v.treats!=='boolean')||(!blank(v.kcal)&&!inRange(v.kcal,800,6000))||(!blank(v.p)&&!inRange(v.p,20,400)))err(k);
+      } else if(k==='simple') {
+        const slots=['b','l','s','d'],perDate=(m,ok)=>m===undefined||(obj(m)&&Object.keys(m).length<=400&&Object.entries(m).every(([d,x])=>date(d)&&obj(x)&&Object.entries(x).every(([sl,v2])=>slots.includes(sl)&&ok(v2))));
+        if(!obj(v)||(v.on!==undefined&&typeof v.on!=='boolean')||!perDate(v.pick,x=>inRange(x,0,20,true))||!perDate(v.log,x=>Array.isArray(x)&&x.length<=60&&x.every(id)))err(k);
       } else if(k.startsWith('photo:')) {if(!obj(v)||!id(v.id)||k!=='photo:'+v.id||!date(v.d)||!['front','side','back'].includes(v.pose)||(v.note!==undefined&&(typeof v.note!=='string'||v.note.length>1000))||typeof v.data!=='string'||!/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(v.data))err(k);}
       else err('Άγνωστη κατηγορία: '+k);
     }
@@ -2107,7 +2110,7 @@ const fmt = (x, d = 0) => (x === null || x === undefined || isNaN(x)) ? '–' : 
 const sfmt = (x, d = 0) => { if (x === null || x === undefined || isNaN(x)) return '–'; const r = Math.round(x * 10 ** d) / 10 ** d; return (r > 0 ? '+' : r < 0 ? '−' : '') + fmt(Math.abs(r), d); };
 const numIn = Reliability.num;
 /* Έκδοση εφαρμογής: εμφανίζεται στο Προφίλ (κεφαλίδα και «Κατάσταση»). */
-const APP_VERSION = '1.3.1';
+const APP_VERSION = '1.4.0';
 /* Πεδία βημάτων/θερμίδων: «10.000» με ελληνικό διαχωριστικό χιλιάδων σημαίνει 10000, όχι 10. */
 const intIn = v => { const s = String(v ?? '').trim(); return /^\d{1,3}(?:\.\d{3})+$/.test(s) ? Number(s.replace(/\./g, '')) : numIn(s); };
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
@@ -2336,6 +2339,7 @@ function recoveryScreen(){
 }
 window.addEventListener('error',e=>{if(e.error?.name==='ValidationError'){e.preventDefault();toast(e.error.message,7000);}});
 function render() { storageStatus();if(recoveryScreen()){const fab=$('#fab');if(fab)fab.hidden=true;return;}
+  if (typeof spPre === 'function') spPre();
 
   $$('.bottom button').forEach(b => { if (b.dataset.nav === UI.view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
   $('#datenav').style.display = UI.view === 'day' ? '' : 'none';
@@ -2343,7 +2347,8 @@ function render() { storageStatus();if(recoveryScreen()){const fab=$('#fab');if(
   const fab = $('#fab'); if (fab) fab.hidden = !(UI.view === 'day' && UI.tab === 'meals');
   const lbl = $('#dateLbl'); lbl.textContent = UI.date === Dates.today() ? 'Σήμερα' : UI.date === Dates.add(Dates.today(), -1) ? 'Χθες' : Dates.label(UI.date);
   lbl.classList.toggle('today', UI.date === Dates.today());
-  $('#main').innerHTML = UI.view === 'day' ? viewDay() : UI.view === 'week' ? viewWeek() : UI.view === 'progress' ? viewProgress() : UI.view === 'plan' && typeof viewPlan === 'function' ? viewPlan() : viewProfile();
+  $('#main').innerHTML = (typeof spView === 'function' && spView()) || (UI.view === 'day' ? viewDay() : UI.view === 'week' ? viewWeek() : UI.view === 'progress' ? viewProgress() : UI.view === 'plan' && typeof viewPlan === 'function' ? viewPlan() : viewProfile());
+  if (typeof spPost === 'function') spPost();
   requestAnimationFrame(drawCharts);
 }
 
@@ -5181,6 +5186,7 @@ function undoToast(msg, fn) {
 
 </script>
 <script src="plan.js"></script>
+<script src="simple.js"></script>
 <script src="ui.js"></script>
 </body>
 </html>
