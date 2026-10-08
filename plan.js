@@ -165,6 +165,8 @@ function mpRole(f) {
   const n = (f.name || '').toLowerCase();
   if (f.supp && /whey|ορού|isolate/.test(n + ' ' + (f.aliases || []).join(' '))) return 'W';
   if (f.supp) return 'SP';
+  // Πιάτα με κατηγορία «άλλο» που είναι κυρίως πρωτεΐνη (π.χ. καλαμάκι κοτόπουλο): κύριο πιάτο, όχι καρύκευμα.
+  if (f.cat === 'other' && f.kcal >= 80 && mpDens(f) >= 12) return 'P';
   if (f.cat === 'meat' || f.cat === 'fish') return /αλλαντικ|ζαμπόν|φέτες/.test(n) ? 'DELI' : 'P';
   if (f.cat === 'egg') return 'EGG';
   if (f.cat === 'dairy') return mpDens(f) >= 8 ? 'YOG' : 'M';
