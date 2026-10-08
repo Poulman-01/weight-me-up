@@ -1,0 +1,113 @@
+/* ui.css — στρώση για κινητό (v1.3). Φορτώνεται μετά το ενσωματωμένο στυλ.
+   Ίδια χρώματα και λογότυπο· αλλάζει διάταξη, μεγέθη αφής και συμπεριφορά για χρήση με ένα χέρι. */
+:root{--gut:16px;--top-h:58px;--nav-h:64px;--seg-h:50px}
+
+/* ---------- Βάση ---------- */
+html{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+body{overscroll-behavior-y:none;padding-bottom:calc(var(--nav-h) + 30px + env(safe-area-inset-bottom,0px))!important}
+.wrap{padding-left:var(--gut);padding-right:var(--gut)}
+button,.item,.chip,.btn{-webkit-user-select:none;user-select:none}
+
+/* ---------- Κεφαλίδα: μεγάλος τίτλος σε κάθε οθόνη εκτός από την Ημέρα ---------- */
+.top .wrap{min-height:var(--top-h)}
+#title:not(:has(.logo)){font-size:1.42rem;font-weight:750;letter-spacing:-.03em}
+#title small{font-size:.72rem;font-weight:550}
+
+/* ---------- Κάτω πλοήγηση: δείκτης-χάπι γύρω από το εικονίδιο ---------- */
+.bottom{left:10px!important;right:10px!important;bottom:calc(8px + env(safe-area-inset-bottom,0px))!important;border-radius:26px!important}
+.bottom .wrap{max-width:620px;padding:6px 4px}
+.bottom button{min-height:var(--nav-h);padding:6px 0 7px!important;gap:4px;font-size:.7rem!important;border-radius:18px;background:none!important;letter-spacing:-.01em}
+.bottom button svg{width:22px;height:22px;box-sizing:content-box;padding:4px 16px;border-radius:999px;transition:background-color .2s}
+.bottom button[aria-current="page"]{color:var(--accent)!important;font-weight:700}
+.bottom button[aria-current="page"] svg{background:var(--accent-soft)}
+#fab{right:18px;bottom:calc(var(--nav-h) + 30px + env(safe-area-inset-bottom,0px))!important;width:60px;height:60px;border-radius:20px}
+#timer{bottom:calc(var(--nav-h) + 22px + env(safe-area-inset-bottom,0px))!important;left:10px!important;right:10px!important}
+#toast{bottom:calc(var(--nav-h) + 30px + env(safe-area-inset-bottom,0px))!important;max-width:calc(100vw - 32px)}
+#undo{bottom:calc(var(--nav-h) + 30px + env(safe-area-inset-bottom,0px))!important}
+
+/* ---------- Ημέρα: πρώτα η κάρτα θερμίδων, μετά οι καρτέλες και τα γεύματα ---------- */
+#main:has(> .hero.ledger){display:flex;flex-direction:column}
+#main:has(> .hero.ledger) > *{margin-top:0!important;margin-bottom:12px!important}
+#main > .banner:has(~ .hero.ledger){order:-5}
+#main:has(> .hero.ledger) > .hero.ledger{order:-4;margin-top:10px!important}
+#main:has(> .hero.ledger) > .seg{order:-3}
+#main:has(> .hero.ledger) > .learn,#main:has(> .hero.ledger) > .rtcard{order:5}
+#main > .banner.install:has(~ .hero.ledger),#main > .banner.backup:has(~ .hero.ledger),#main:has(> .hero.ledger) > .onb{order:6}
+
+/* Καρτέλες που μένουν ορατές στο σκρολάρισμα */
+#main > .seg{position:sticky;top:calc(var(--top-h) + env(safe-area-inset-top,0px));z-index:4;height:var(--seg-h);box-sizing:border-box;align-items:stretch;
+  box-shadow:0 -12px 0 8px var(--bg),0 8px 16px -12px rgba(14,26,51,.35)!important}
+
+/* ---------- Κάρτα θερμίδων ---------- */
+.hero{padding:18px 18px 14px;border-radius:24px}
+.hero-num{font-size:2.9rem}
+.hero-kv{margin-top:14px}
+.hero-link{min-height:44px}
+
+/* ---------- Κάρτες, λίστες ---------- */
+.sec{padding:16px;border-radius:20px}
+.mealcard,.sweet-c,.exc{border-radius:20px}
+.mc-h{min-height:64px}
+.item{min-height:56px;padding:12px 14px}
+.item .nm{font-size:.97rem}
+.list.inner li + li{border-top:1px solid var(--line)}
+
+/* Κεφαλίδα γεύματος: υπότιτλος σε μία γραμμή */
+.mc-h .grow > .small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc-h .pill{font-size:.78rem;padding:4px 9px}
+
+/* ---------- Αφή: μεγέθη και ανάδραση ---------- */
+.btn{min-height:44px}
+.btn.sm{min-height:38px;padding:8px 14px!important}
+.x{min-width:40px;min-height:40px;display:inline-grid;place-items:center}
+.iconbtn{width:40px;height:40px}
+.chip{min-height:36px;padding:7px 14px!important;font-size:.88rem}
+.btn,.chip,.iconbtn,.addbtn,.daydone,.quick button,#fab,.mp-cta{transition:transform .12s ease,background-color .15s,border-color .15s}
+.btn:active,.chip:active,.iconbtn:active,.addbtn:active,.daydone:active,.quick button:active,.mp-cta:active{transform:scale(.97)}
+#fab:active{transform:scale(.94)}
+.item:active,.mc-h:active,.rt li button:active,.sweet-h:active{background:var(--sunk)!important}
+@media (hover:none){.btn:hover{border-color:var(--line-2)!important}.item:hover{background:none}}
+
+/* Οριζόντιες σειρές chips: κύλιση με το δάχτυλο μέχρι την άκρη της οθόνης */
+.chips:not(.wrap){margin-left:calc(-1 * var(--gut));margin-right:calc(-1 * var(--gut));padding:2px var(--gut) 6px;scroll-padding-inline:var(--gut);scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.chips:not(.wrap)::-webkit-scrollbar{display:none}
+.chips:not(.wrap) .chip{scroll-snap-align:start;flex:none}
+dialog .chips:not(.wrap){margin-left:-18px;margin-right:-18px;padding-left:18px;padding-right:18px}
+
+/* ---------- Πεδία ---------- */
+input[type=text],input[type=number],input[type=date],input[type=search],input[type=password],input:not([type]),select{min-height:48px!important}
+.f > span{margin-bottom:6px}
+
+/* ---------- Banner: συμπαγή ---------- */
+.banner{padding:10px 12px;font-size:.88rem;gap:8px}
+.banner .small.muted{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* ---------- «Ξεκίνα εδώ» και ρουτίνα: πιο συμπαγείς γραμμές ---------- */
+.rt li button:not(.skip){min-height:56px;padding:10px 12px}
+.rt .skip{min-width:64px}
+
+/* ---------- Παράθυρα: φύλλο από κάτω ---------- */
+dialog{max-height:94dvh;border-radius:26px 26px 0 0!important;overscroll-behavior:contain}
+dialog[open]{animation:wmuSheet .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes wmuSheet{from{transform:translateY(100%)}to{transform:none}}
+.dlg-h{position:relative;padding-top:24px!important;touch-action:none}
+.dlg-h::before{width:44px!important;height:5px!important;top:9px!important;background:var(--line-2)!important}
+.dlg-b{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+dialog .seg5{grid-auto-columns:minmax(max-content,1fr)!important;overflow-x:auto;scrollbar-width:none}
+dialog .seg5::-webkit-scrollbar{display:none}
+dialog .seg5 button{padding:9px 12px!important}
+dialog.dragging{transition:none}
+@media (min-width:700px){dialog{border-radius:24px!important;margin:auto!important}}
+@media (prefers-reduced-motion:reduce){dialog[open]{animation:none}}
+
+/* ---------- Πίνακες σε στενές οθόνες ---------- */
+.scroll-x{margin-left:-4px;margin-right:-4px;padding:0 4px}
+.tbl{font-size:.86rem}
+
+/* ---------- Πολύ μικρά κινητά (iPhone SE) ---------- */
+@media (max-width:360px){
+  :root{--gut:12px}
+  .bottom button{font-size:.64rem!important}
+  .bottom button svg{padding:4px 10px}
+  .hero-num{font-size:2.4rem}
+}

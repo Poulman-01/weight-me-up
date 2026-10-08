@@ -109,29 +109,41 @@ foodCache = null;
 /* ---------- 2. Στυλ ---------- */
 (() => {
   const css = `
-.mp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
-.mp-food{display:flex;gap:10px;align-items:flex-start;text-align:left;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:var(--r-sm);padding:9px 10px;font:inherit;cursor:pointer;min-width:0}
-.mp-food .bx{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--line);flex:none;margin-top:2px;display:grid;place-items:center}
-.mp-food[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
-.mp-food[aria-pressed="true"] .bx{background:var(--accent);border-color:var(--accent)}
-.mp-food[aria-pressed="true"] .bx::after{content:"";width:9px;height:5px;border:2px solid var(--accent-ink);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
-.mp-food .t{min-width:0}.mp-food .n{font-weight:600;font-size:.92rem;display:block}.mp-food .m{color:var(--muted);font-size:.78rem;display:block}
-.mp-bal{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
-.mp-bal div{border:1px solid var(--line);border-radius:var(--r-sm);padding:7px 8px;min-width:0}
-.mp-bal b{display:block;font-size:1.15rem}.mp-bal span{font-size:.72rem;color:var(--muted);display:block}
-.mp-bal .low span{color:var(--warn);font-weight:600}
-.mp-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin:6px 0 4px}
-.mp-days button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:var(--r-sm);padding:6px 2px;font:inherit;font-size:.8rem;cursor:pointer;min-width:0}
-.mp-days button[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
-.mp-days small{display:block;color:var(--muted);font-size:.68rem}.mp-days i{display:block;font-style:normal;font-size:.62rem;color:var(--accent);font-weight:700;height:.9rem}
-.mp-meal .mh{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.mp-meal ul{list-style:none;margin:6px 0 8px;padding:0;display:grid;gap:3px}
-.mp-meal li{display:flex;justify-content:space-between;gap:10px;font-size:.9rem}.mp-meal li span:last-child{color:var(--muted);white-space:nowrap}
-.mp-meter{margin:6px 0}.mp-meter .r{display:flex;justify-content:space-between;font-size:.85rem}
-.mp-meter .bar{height:7px;background:var(--sunk);border-radius:4px;overflow:hidden;margin-top:3px}.mp-meter .bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
-.mp-meter.warn .bar i{background:var(--warn)}.mp-meter.bad .bar i{background:var(--over)}
-.mp-tl td:first-child{white-space:nowrap;font-weight:600;vertical-align:top}
-@media (max-width:480px){.mp-bal{grid-template-columns:repeat(3,minmax(0,1fr))}.mp-days small{display:none}}`;
+.mp-target .mp-tnum{display:block;font-size:1.12rem;font-weight:700;letter-spacing:-.01em;margin:2px 0}
+.mp-bal{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:14px}
+.mp-bal div{background:var(--sunk);border-radius:12px;padding:8px 4px;text-align:center;min-width:0}
+.mp-bal b{display:block;font-size:1.1rem;line-height:1.1}
+.mp-bal span{display:block;font-size:.68rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mp-bal .low{background:color-mix(in srgb,var(--warn) 12%,var(--surface))}.mp-bal .low b{color:var(--warn)}
+.mp-sticky{position:sticky;top:calc(var(--top-h,58px) + var(--seg-h,50px) + env(safe-area-inset-top,0px));z-index:3;background:var(--bg);padding:8px 0 0;margin:0 0 4px;box-shadow:0 -14px 0 0 var(--bg),0 8px 14px -12px rgba(14,26,51,.35)}
+.mp-sticky input{width:100%}
+.mp-tools{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 2px}
+.mp-gh{display:flex;justify-content:space-between;font-size:.8rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--muted);margin:18px 4px 8px}
+.mp-gh span{color:var(--accent)}
+.mp-row{text-align:left;width:100%;border:0;background:none;color:var(--ink);font:inherit;cursor:pointer}
+.mp-ck{width:26px;height:26px;border-radius:50%;border:2px solid var(--line-2);flex:none;display:grid;place-items:center;transition:background-color .15s,border-color .15s}
+.mp-row[aria-pressed="true"] .mp-ck{background:var(--accent);border-color:var(--accent)}
+.mp-row[aria-pressed="true"] .mp-ck::after{content:"";width:10px;height:6px;border:2.5px solid var(--accent-ink);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.mp-row[aria-pressed="true"] .nm{color:var(--accent)}
+.mp-cta{position:fixed;left:50%;transform:translateX(-50%);width:min(608px,calc(100% - 32px));bottom:calc(var(--nav-h,64px) + 26px + env(safe-area-inset-bottom,0px));z-index:6;
+  display:flex;align-items:center;justify-content:center;gap:10px;min-height:54px;border:0;border-radius:18px;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:700;font-size:1rem;box-shadow:var(--shadow-float,0 8px 28px rgba(14,26,51,.18))}
+.mp-cta:active{transform:translateX(-50%) scale(.98)!important}
+.mp-cta span{background:color-mix(in srgb,var(--accent-ink) 22%,transparent);border-radius:999px;padding:1px 10px;font-size:.88rem}
+.mp-spacer{height:84px}
+.mp-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;position:sticky;top:calc(var(--top-h,58px) + var(--seg-h,50px) + env(safe-area-inset-top,0px));z-index:3;background:var(--bg);padding:8px 0;margin:0 0 4px;box-shadow:0 -14px 0 0 var(--bg),0 8px 14px -12px rgba(14,26,51,.35)}
+.mp-days button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:14px;padding:7px 0 6px;font:inherit;font-size:.82rem;font-weight:600;cursor:pointer;min-width:0;display:flex;flex-direction:column;align-items:center;gap:1px}
+.mp-days button small{font-size:.66rem;color:var(--muted);font-weight:500}
+.mp-days button i{width:6px;height:6px;border-radius:50%;background:transparent;margin-bottom:2px}
+.mp-days button i.on{background:var(--accent)}
+.mp-days button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.mp-days button[aria-pressed="true"] small{color:var(--accent-ink);opacity:.8}
+.mp-days button[aria-pressed="true"] i.on{background:var(--accent-ink)}
+.mp-tl .item{min-height:52px;gap:14px}
+.mp-time{font-weight:700;font-variant-numeric:tabular-nums;color:var(--accent);min-width:3.2em}
+.mp-rule li{padding:0}
+.mp-set .chips{margin-top:8px}
+.mealcard .item{cursor:default}
+.mp-avg{font-size:.84rem;color:var(--muted);margin:2px 4px 10px}`;
   const s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
 })();
 
@@ -309,6 +321,7 @@ function mpInstallProgram() {
 }
 
 /* ---------- 7. Προβολή ---------- */
+const MP_GSHORT = { P: 'Πρωτ.', C: 'Υδατ.', V: 'Λαχαν.', F: 'Φρούτα', X: 'Λιπαρά' };
 function mpMeter(lab, v, t, unit, kind) {
   const r = v / t, cls = kind === 'kcal' ? (Math.abs(r - 1) <= .04 ? '' : Math.abs(r - 1) <= .08 ? 'warn' : 'bad') : (r >= .95 ? '' : r >= .8 ? 'warn' : 'bad');
   return `<div class="mp-meter ${cls}"><div class="r"><span>${lab}</span><span><b>${fmt(v)}</b> / ${fmt(t)}${unit}</span></div><div class="bar"><i style="width:${Math.min(100, r * 100)}%"></i></div></div>`;
@@ -318,81 +331,84 @@ function mpCounts(picks) {
   for (const id of picks) { const f = byId.get(id); if (!f) continue; const r = mpRole(f); for (const [g, rs] of Object.entries(MP_GROUPS)) if (rs.includes(r)) c[g]++; }
   return c;
 }
+const mpBalHTML = c => `<div class="mp-bal">${Object.keys(MP_NEED).map(k => `<div class="${c[k] < MP_NEED[k] ? 'low' : ''}" title="${c[k] < MP_NEED[k] ? `Διάλεξε ${MP_NEED[k] - c[k]} ακόμα` : 'Αρκετά για ποικιλία'}"><b>${c[k]}</b><span>${MP_GSHORT[k]}</span></div>`).join('')}</div>`;
 function mpFoodListHTML() {
   const st = mpState(), pk = new Set(st.picks), q = (UI.mpQ || '').trim();
   let list = foods().list.filter(f => f.src !== 'recipe' && (UI.mpCat ? (f.cat || 'other') === UI.mpCat : true) && (!UI.mpOnly || pk.has(f.id)));
   if (q) { const qs = [Parser.norm(q), Parser.norm(Translit.toGreek(q)), Translit.toLatin(q)].filter(Boolean);
     list = list.filter(f => { const raw = [f.name, ...(f.aliases || []), f.brand || ''].join(' '), hay = Parser.norm(raw) + ' ' + Translit.toLatin(raw); return qs.some(x => hay.includes(x)); }); }
-  if (!list.length) return '<p class="empty">Δεν βρέθηκαν τρόφιμα. Δοκίμασε άλλη λέξη ή άλλη κατηγορία.</p>';
+  if (!list.length) return `<p class="empty">${UI.mpOnly ? 'Δεν έχεις διαλέξει τρόφιμα σε αυτή την κατηγορία.' : 'Δεν βρέθηκαν τρόφιμα. Δοκίμασε άλλη λέξη ή άλλη κατηγορία.'}</p>`;
   const groups = {}; list.forEach(f => (groups[f.cat || 'other'] ??= []).push(f));
-  return Object.entries(groups).map(([c, arr]) => `<h3 class="gh">${esc(CAT_LABELS[c] || c)}</h3><div class="mp-grid">${arr.sort((a, b) => a.name.localeCompare(b.name, 'el')).map(f => {
-    const g = mpPc(f) || f.portion || 100;
-    return `<button class="mp-food" data-act="mpPick" data-id="${esc(f.id)}" aria-pressed="${pk.has(f.id)}"><span class="bx"></span><span class="t"><span class="n">${esc(f.name)}</span><span class="m">${fmt(g)} g · ${fmt(f.kcal * g / 100)} kcal · ${fmt(f.p * g / 100, 1)} g πρωτ.</span></span></button>`; }).join('')}</div>`).join('');
+  return Object.entries(groups).map(([c, arr]) => { const n = arr.filter(f => pk.has(f.id)).length;
+    return `<h3 class="mp-gh">${esc(CAT_LABELS[c] || c)}<span>${n ? n + ' ✓' : ''}</span></h3><ul class="list">${arr.sort((a, b) => a.name.localeCompare(b.name, 'el')).map(f => {
+      const g = mpPc(f) || f.portion || 100;
+      return `<li><button class="item mp-row" data-act="mpPick" data-id="${esc(f.id)}" aria-pressed="${pk.has(f.id)}"><span class="grow"><span class="nm">${esc(f.name)}</span><br><span class="sub">${fmt(g)} g · ${fmt(f.kcal * g / 100)} kcal · ${fmt(f.p * g / 100, 1)} g πρωτ.</span></span><span class="mp-ck" aria-hidden="true"></span></button></li>`; }).join('')}</ul>`; }).join('');
 }
 function mpFoodsTab() {
   const st = mpState(), T = mpTargets(), c = mpCounts(st.picks);
   const cats = [...new Set(foods().list.map(f => f.cat || 'other'))];
-  return `<section class="sec"><h2>Στόχος πλάνου</h2>
-    <p>${fmt(T.kcal)} kcal · ${fmt(T.p)} g πρωτεΐνη · ${T.fib} g φυτικές ίνες ${T.missing ? '<span class="small muted">(προσωρινά· συμπλήρωσε το Προφίλ ή γράψε δικό σου στόχο)</span>' : T.fromProfile ? '<span class="small muted">(από το Προφίλ σου)</span>' : '<span class="small muted">(δικός σου στόχος)</span>'}</p>
-    <div class="row" style="gap:8px;flex-wrap:wrap"><label class="f" style="flex:1;min-width:120px"><span>kcal (κενό = από Προφίλ)</span><input id="mpKcal" inputmode="numeric" value="${esc(st.kcal ?? '')}"></label><label class="f" style="flex:1;min-width:120px"><span>Πρωτεΐνη g (κενό = από Προφίλ)</span><input id="mpP" inputmode="numeric" value="${esc(st.p ?? '')}"></label></div></section>
-  <section class="sec"><div class="row between"><h2>Τι τρως</h2><span class="small muted">${st.picks.length} επιλεγμένα</span></div>
-    <p class="small muted">Διάλεξε όσα τρως πραγματικά. Η εβδομάδα φτιάχνεται μόνο από αυτά.</p>
-    <div class="mp-bal">${Object.keys(MP_NEED).map(k => `<div class="${c[k] < MP_NEED[k] ? 'low' : ''}"><span>${MP_GLABEL[k]}</span><b>${c[k]}</b><span>${c[k] < MP_NEED[k] ? `θέλει ${MP_NEED[k] - c[k]} ακόμα` : 'αρκετά'}</span></div>`).join('')}</div>
-    <div class="row" style="gap:6px;flex-wrap:wrap;margin-top:10px"><button class="btn sm" data-act="mpStarter">Βασική λίστα</button><button class="btn sm" data-act="mpOnly" aria-pressed="${!!UI.mpOnly}">${UI.mpOnly ? 'Όλα τα τρόφιμα' : 'Μόνο τα επιλεγμένα'}</button><button class="btn sm" data-act="mpClear">${UI.mpArmed ? 'Πάτα ξανά για καθαρισμό' : 'Καθαρισμός'}</button><button class="btn sm pri" data-act="mpTab" data-tab="week">Φτιάξε την εβδομάδα →</button></div>
-    <input type="search" id="mpQ" placeholder="Αναζήτηση (π.χ. κοτόπουλο, feta, ryzi)" value="${esc(UI.mpQ || '')}" style="width:100%;margin-top:10px" aria-label="Αναζήτηση τροφίμων">
-    <div class="chips" style="margin-top:8px"><button class="chip" data-act="mpCat" data-cat="" aria-pressed="${!UI.mpCat}">Όλα</button>${cats.map(k => `<button class="chip" data-act="mpCat" data-cat="${esc(k)}" aria-pressed="${UI.mpCat === k}">${esc(CAT_LABELS[k] || k)}</button>`).join('')}</div>
-    <div id="mpList">${mpFoodListHTML()}</div></section>`;
+  const src = T.missing ? 'Προσωρινός στόχος· συμπλήρωσε το Προφίλ' : T.fromProfile ? 'Από το Προφίλ σου' : 'Δικός σου στόχος για το πλάνο';
+  return `<section class="sec mp-target"><div class="row between" style="align-items:flex-start"><div class="grow"><span class="small muted">Στόχος πλάνου</span><b class="mp-tnum">${fmt(T.kcal)} kcal · ${fmt(T.p)} g πρωτεΐνη</b><span class="small muted">${src}</span></div><button class="btn sm" data-act="mpEditT" aria-expanded="${!!UI.mpEditT}">${UI.mpEditT ? 'Κλείσιμο' : 'Αλλαγή'}</button></div>
+    ${UI.mpEditT ? `<div class="grid2" style="margin-top:12px"><label class="f"><span>Θερμίδες (kcal)</span><input id="mpKcal" inputmode="numeric" placeholder="από Προφίλ" value="${esc(st.kcal ?? '')}"></label><label class="f"><span>Πρωτεΐνη (g)</span><input id="mpP" inputmode="numeric" placeholder="από Προφίλ" value="${esc(st.p ?? '')}"></label></div><p class="small muted" style="margin:0">Κενό = ακολουθεί το Προφίλ.</p>` : ''}
+    ${mpBalHTML(c)}</section>
+  <div class="mp-sticky"><input type="search" id="mpQ" placeholder="Αναζήτηση: κοτόπουλο, feta, ryzi…" value="${esc(UI.mpQ || '')}" aria-label="Αναζήτηση τροφίμων" enterkeyhint="search">
+    <div class="chips"><button class="chip" data-act="mpOnly" aria-pressed="${!!UI.mpOnly}">✓ Επιλεγμένα · <span id="mpN">${st.picks.length}</span></button><button class="chip" data-act="mpCat" data-cat="" aria-pressed="${!UI.mpCat}">Όλα</button>${cats.map(k => `<button class="chip" data-act="mpCat" data-cat="${esc(k)}" aria-pressed="${UI.mpCat === k}">${esc(CAT_LABELS[k] || k)}</button>`).join('')}</div></div>
+  <div class="mp-tools"><button class="btn sm" data-act="mpStarter">+ Βασική λίστα</button><button class="btn sm" data-act="mpClear">${UI.mpArmed ? 'Πάτα ξανά για καθαρισμό' : 'Καθαρισμός'}</button></div>
+  <div id="mpList">${mpFoodListHTML()}</div><div class="mp-spacer"></div>
+  <button class="mp-cta" data-act="mpTab" data-tab="week">Φτιάξε την εβδομάδα <span id="mpCount">${st.picks.length}</span></button>`;
 }
+const mpHeroKv = (ic, lab, val) => `<div>${ic}<span>${lab}</span><b>${val}</b></div>`;
 function mpWeekTab() {
   const st = mpState();
-  if (!st.picks.length) return `<section class="sec"><h2>Η εβδομάδα σου</h2><p>Δεν έχεις διαλέξει φαγητά ακόμα.</p><button class="btn pri" data-act="mpTab" data-tab="foods">Διάλεξε φαγητά</button> <button class="btn" data-act="mpStarter">Ξεκίνα με βασική λίστα</button></section>`;
+  if (!st.picks.length) return `<section class="sec"><h2>Η εβδομάδα σου</h2><p>Δεν έχεις διαλέξει φαγητά ακόμα.</p><div class="row" style="flex-wrap:wrap;gap:8px"><button class="btn pri" data-act="mpTab" data-tab="foods">Διάλεξε φαγητά</button><button class="btn" data-act="mpStarter">Βασική λίστα</button></div></section>`;
   const plan = mpBuild(); UI.mpPlan = plan; const di = UI.mpDay ?? (Dates.dowNum(Dates.today()) + 6) % 7, day = plan.week[di], t = plan.t7[di], T = plan.T;
-  const avg = k => plan.t7.reduce((s, x) => s + x[k], 0) / 7;
-  return `<section class="sec"><div class="row between" style="flex-wrap:wrap;gap:6px"><h2>Η εβδομάδα σου</h2><div class="row" style="gap:6px"><button class="btn sm" data-act="mpShuffle">Ανακάτεμα</button><button class="btn sm" data-act="mpCopy">Αντιγραφή</button></div></div>
-    <div class="row" style="gap:6px;flex-wrap:wrap;align-items:center"><span class="small muted">Γυμναστήριο:</span>${MP_DAYS_S.map((n, i) => `<button class="chip" data-act="mpGym" data-d="${i}" aria-pressed="${st.gym.includes(i)}">${n}</button>`).join('')}</div>
-    <label class="radios" style="margin-top:8px"><label><input type="checkbox" id="mpTreats" ${st.treats ? 'checked' : ''}>Ένα μικρό γλυκό 2 φορές την εβδομάδα (αν έχεις διαλέξει γλυκά)</label></label>
-    ${plan.warns.map(w => `<div class="banner"><span>${esc(w)}</span><button class="btn sm" data-act="mpTab" data-tab="foods">Φαγητά</button></div>`).join('')}
-    <div class="mp-days" role="tablist">${plan.week.map((w, i) => `<button role="tab" data-act="mpDay" data-d="${i}" aria-pressed="${i === di}"><i>${w.gym ? 'GYM' : ''}</i>${MP_DAYS_S[w.d]}<small>${fmt(plan.t7[i].kcal)}</small></button>`).join('')}</div>
-    <p class="small muted">Μέσος όρος εβδομάδας: ${fmt(avg('kcal'))} kcal · ${fmt(avg('p'))} g πρωτεΐνη · ${fmt(avg('fib'))} g ίνες</p></section>
-  <section class="sec"><h2>${MP_DAYS[day.d]}${day.gym ? ' · γυμναστήριο' : ''}</h2>
-    ${mpMeter('Θερμίδες', t.kcal, T.kcal, ' kcal', 'kcal')}${mpMeter('Πρωτεΐνη', t.p, T.p, ' g', 'min')}${mpMeter('Φυτικές ίνες', t.fib, T.fib, ' g', 'min')}
-    <p class="small muted">Υδατάνθρακες ${fmt(t.c)} g · Λιπαρά ${fmt(t.f)} g</p></section>
-  ${day.meals.map((m, mi) => { const mt = mpTot([m]); return `<section class="sec mp-meal"><div class="mh"><h2>${esc(m.slot)}</h2><span class="small muted">${m.free ? '≈0 kcal' : `${fmt(mt.kcal)} kcal · ${fmt(mt.p)} g πρωτ.`}</span></div>${m.free ? '' : `<p class="small"><b>${esc(mpDish(m))}</b></p>`}
-    <ul>${m.items.map(([f, g]) => `<li><span>${esc(f.name)}</span><span>${mpQty(f, g)}</span></li>`).join('')}</ul>
-    ${m.free ? '' : `<button class="btn sm" data-act="mpLog" data-mi="${mi}">Καταγραφή στη σημερινή μέρα</button>`}</section>`; }).join('')}`;
+  const avg = k => plan.t7.reduce((s, x) => s + x[k], 0) / 7, pct = Math.round(t.kcal / T.kcal * 100), R = 40, C = 2 * Math.PI * R;
+  return `<div class="mp-days" role="tablist">${plan.week.map((w, i) => `<button role="tab" data-act="mpDay" data-d="${i}" aria-pressed="${i === di}"><i class="${w.gym ? 'on' : ''}"></i>${MP_DAYS_S[w.d]}<small>${fmt(plan.t7[i].kcal)}</small></button>`).join('')}</div>
+  <section class="hero mp-hero"><div class="hero-top"><div><div class="eyebrow">${MP_DAYS[day.d]}${day.gym ? ' · γυμναστήριο' : ''}</div><div class="hero-num">${fmt(t.kcal)}</div><div class="hero-sub">από ${fmt(T.kcal)} kcal</div></div>
+    <svg class="hero-ring" viewBox="0 0 100 100" role="img" aria-label="${pct}% του στόχου"><circle cx="50" cy="50" r="${R}" class="hr-bg"/><circle cx="50" cy="50" r="${R}" class="hr-fg" stroke-dasharray="${(C * Math.min(1, t.kcal / T.kcal)).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 50 50)"/><text x="50" y="54" text-anchor="middle" class="hr-pct">${pct}%</text></svg></div>
+    <div class="hero-kv">${mpHeroKv(IC.target, `Πρωτ. /${fmt(T.p)}`, `${fmt(t.p)} g`)}${mpHeroKv(IC.bowl, `Ίνες /${T.fib}`, `${fmt(t.fib)} g`)}${mpHeroKv(IC.flame, 'Υδατ. · Λίπ.', `${fmt(t.c)}·${fmt(t.f)}`)}</div></section>
+  <p class="mp-avg">Μέσος όρος εβδομάδας ${fmt(avg('kcal'))} kcal · ${fmt(avg('p'))} g πρωτεΐνη · ${fmt(avg('fib'))} g ίνες</p>
+  <div class="row" style="gap:8px;flex-wrap:wrap;margin:0 0 4px"><button class="btn sm" data-act="mpShuffle">Ανακάτεμα</button><button class="btn sm" data-act="mpCopy">Αντιγραφή</button><button class="btn sm" data-act="mpSet" aria-expanded="${!!UI.mpSet}">Ρυθμίσεις ${UI.mpSet ? '⌃' : '⌄'}</button></div>
+  ${UI.mpSet ? `<section class="sec mp-set"><b>Μέρες γυμναστηρίου</b><div class="chips wrap">${MP_DAYS_S.map((n, i) => `<button class="chip" data-act="mpGym" data-d="${i}" aria-pressed="${st.gym.includes(i)}">${n}</button>`).join('')}</div>
+    <label class="radios" style="margin-top:10px"><label><input type="checkbox" id="mpTreats" ${st.treats ? 'checked' : ''}>Μικρό γλυκό 2 φορές την εβδομάδα</label></label></section>` : ''}
+  ${plan.warns.map(w => `<div class="banner"><span class="small">${esc(w)}</span><button class="btn sm" data-act="mpTab" data-tab="foods">Φαγητά</button></div>`).join('')}
+  ${day.meals.map((m, mi) => { const mt = mpTot([m]);
+    return `<section class="mealcard open"><div class="mc-h"><span class="mc-ic ic-${m.meal}">${IC[m.meal] || IC.bowl}</span><div class="grow"><h3>${esc(m.slot)}</h3><span class="small muted">${m.free ? 'Χωρίς θερμίδες' : `${fmt(mt.p)} g πρωτεΐνη`}</span></div><span class="pill">${fmt(mt.kcal)} kcal</span>${m.free ? '' : `<button class="iconbtn" data-act="mpLog" data-mi="${mi}" aria-label="Καταγραφή στο σημερινό ${esc(m.slot)}">${IC.plus}</button>`}</div>
+    <ul class="list inner">${m.items.map(([f, g]) => `<li><div class="item"><span class="grow"><span class="nm">${esc(f.name)}</span><br><span class="sub">${mpQty(f, g)} · Π ${fmt(f.p * g / 100)} Υ ${fmt(f.c * g / 100)} Λ ${fmt(f.f * g / 100)}</span></span><span class="kc">${fmt(f.kcal * g / 100)}</span></div></li>`).join('')}</ul></section>`; }).join('')}
+  <p class="small muted" style="margin:4px 4px 0">Το <b>+</b> σε κάθε γεύμα το καταγράφει στη σημερινή μέρα.</p>`;
 }
 function mpGymTab() {
   const all = programs(), has = all.list.some(x => x.id === MP_PROGRAM.id), active = all.active === MP_PROGRAM.id;
-  const row = ([ex, sets, lo, hi, rest]) => { const e = exById(ex); return e ? `<tr><td>${esc(e.name)}</td><td>${esc(MP_TG[ex] || '')}</td><td style="white-space:nowrap">${sets}×${lo === hi ? lo : `${lo}–${hi}`}${ex === 'plank' ? '″' : ''}</td><td style="white-space:nowrap">${rest >= 120 ? rest / 60 + '′' : rest + '″'}</td></tr>` : ''; };
+  const row = ([ex, sets, lo, hi, rest]) => { const e = exById(ex); if (!e) return '';
+    return `<li><div class="item"><span class="grow"><span class="nm">${esc(e.name)}</span><br><span class="sub">${esc(MP_TG[ex] || '')} · διάλειμμα ${rest >= 120 ? rest / 60 + '′' : rest + '″'}</span></span><span class="kc">${sets}×${lo === hi ? lo : `${lo}–${hi}`}${ex === 'plank' ? '″' : ''}</span></div></li>`; };
   return `<section class="sec"><h2>Ολόσωμο A/B/C · 3 ημέρες</h2>
-    <p>Τρεις ολόσωμες προπονήσεις την εβδομάδα, περίπου 65′ η καθεμία. Στοχεύουν σε γράμμωση και δύναμη, όχι σε όγκο. Σε έλλειμμα θερμίδων τα βάρη κρατούν τους μύες, ώστε να χάνεις λίπος.</p>
-    <button class="btn pri" data-act="mpProgram">${active ? 'Είναι το ενεργό σου πρόγραμμα ✓' : has ? 'Κάν’ το ενεργό πρόγραμμα' : 'Πρόσθεσέ το στα προγράμματά μου'}</button>
-    <p class="note">Μετά το βρίσκεις στην Ημέρα → Άσκηση, με χρονόμετρο διαλείμματος, ιστορικό και προτάσεις βάρους.</p></section>
-  ${MP_PROGRAM.days.map(d => `<section class="sec"><h2>${esc(d.name)}</h2><div class="scroll-x"><table class="tbl"><thead><tr><th>Άσκηση</th><th>Μηχάνημα</th><th>Σετ×Επ.</th><th>Διάλ.</th></tr></thead><tbody>${d.items.map(row).join('')}</tbody></table></div></section>`).join('')}
-  <section class="sec"><h2>Κάθε προπόνηση</h2><ol class="small">
-    <li><b>Ζέσταμα 8′:</b> 5′ ποδήλατο ή ελλειπτικό χαλαρά και ένα ελαφρύ σετ 12 επαναλήψεων στην πρώτη άσκηση ποδιών και πάνω κορμού.</li>
-    <li><b>Βάρη 45′:</b> με τη σειρά του προγράμματος. Σταμάτα κάθε σετ όταν θα μπορούσες να κάνεις ακόμα 1–2 καθαρές επαναλήψεις.</li>
-    <li><b>Περπάτημα σε κλίση 10′:</b> διάδρομος 8–10%, 5–5,5 km/h. Πάντα μετά τα βάρη.</li>
-    <li><b>Μέσα σε 1 ώρα:</b> γεύμα ή shake με 25–40 g πρωτεΐνη.</li></ol>
-    <h3 class="gh">Πρόοδος</h3><ul class="small"><li>Όταν βγάζεις το πάνω όριο επαναλήψεων σε όλα τα σετ, ανέβασε ένα βήμα βάρους και ξεκίνα από το κάτω όριο.</li><li>Σε έλλειμμα θερμίδων, το να κρατάς τα ίδια βάρη είναι επιτυχία.</li><li>Κάθε 7η εβδομάδα ελαφριά: ίδιες ασκήσεις, μισά σετ.</li><li>Αν χάσεις μια προπόνηση, κάν’ την την επόμενη μέρα. Ποτέ δύο τη μέρα, ποτέ βάρη δύο μέρες συνεχόμενα με το ίδιο πρόγραμμα.</li><li>Πόνος σε άρθρωση (όχι κάψιμο στον μυ) = σταματάς την άσκηση.</li></ul>
-    <h3 class="gh">Technogym</h3><p class="small">Το Technogym app δεν εισάγει πρόγραμμα από αρχείο. Ζήτα από τον γυμναστή να περάσει αυτές τις 3 ημέρες στο προφίλ σου στο Mywellness, ή φτιάξ’ τες μόνος σου στο app άσκηση-άσκηση. Η στήλη «Μηχάνημα» δίνει τα ονόματα των μηχανημάτων της σειράς Selection.</p></section>`;
+    <p class="small">Τρεις ολόσωμες προπονήσεις την εβδομάδα, περίπου 65′ η καθεμία. Για γράμμωση και δύναμη, όχι όγκο: σε έλλειμμα θερμίδων τα βάρη κρατούν τους μύες και χάνεις λίπος.</p>
+    <button class="btn ${active ? '' : 'pri'}" data-act="mpProgram" style="width:100%;margin-top:10px">${active ? '✓ Είναι το ενεργό σου πρόγραμμα' : has ? 'Κάν’ το ενεργό πρόγραμμα' : 'Πρόσθεσέ το στα προγράμματά μου'}</button>
+    <p class="small muted" style="margin-bottom:0">Μετά το βρίσκεις στην Ημέρα → Άσκηση, με χρονόμετρο διαλείμματος και προτάσεις βάρους.</p></section>
+  ${MP_PROGRAM.days.map((d, i) => `<section class="mealcard open"><div class="mc-h"><span class="mc-ic"><b>${'ABC'[i]}</b></span><div class="grow"><h3>${esc(d.name)}</h3><span class="small muted">${d.items.length} ασκήσεις · ~65′</span></div></div><ul class="list inner">${d.items.map(row).join('')}</ul></section>`).join('')}
+  <section class="sec"><h2>Κάθε προπόνηση</h2><ul class="list inner mp-tl" style="border-top:0">
+    ${[['8′', 'Ζέσταμα: ποδήλατο ή ελλειπτικό χαλαρά, και ένα ελαφρύ σετ 12 επαναλήψεων στην πρώτη άσκηση ποδιών και πάνω κορμού.'], ['45′', 'Βάρη με τη σειρά του προγράμματος. Σταμάτα κάθε σετ όταν θα μπορούσες να κάνεις ακόμα 1–2 καθαρές επαναλήψεις.'], ['10′', 'Περπάτημα σε διάδρομο, κλίση 8–10%, 5–5,5 km/h. Πάντα μετά τα βάρη.'], ['+1 ώρα', 'Γεύμα ή shake με 25–40 g πρωτεΐνη.']].map(([a, b]) => `<li><div class="item"><span class="mp-time">${a}</span><span class="grow small">${b}</span></div></li>`).join('')}</ul></section>
+  <section class="sec"><h2>Πρόοδος</h2><ul class="guide">
+    <li>Όταν βγάζεις το πάνω όριο επαναλήψεων σε όλα τα σετ, ανέβασε ένα βήμα βάρους και ξεκίνα από το κάτω όριο.</li>
+    <li>Σε έλλειμμα θερμίδων, το να κρατάς τα ίδια βάρη είναι επιτυχία.</li>
+    <li>Κάθε 7η εβδομάδα ελαφριά: ίδιες ασκήσεις, μισά σετ.</li>
+    <li>Χαμένη προπόνηση; Κάν’ την την επόμενη μέρα. Ποτέ δύο τη μέρα.</li>
+    <li>Πόνος σε άρθρωση (όχι κάψιμο στον μυ) σημαίνει σταματάς την άσκηση.</li></ul></section>
+  <section class="sec"><h2>Technogym</h2><p class="small">Το Technogym app δεν εισάγει πρόγραμμα από αρχείο. Ζήτα από τον γυμναστή να περάσει τις 3 ημέρες στο προφίλ σου στο Mywellness, ή φτιάξ’ τες στο app άσκηση-άσκηση. Δίπλα σε κάθε άσκηση γράφει το μηχάνημα της σειράς Selection.</p></section>`;
 }
 function mpGuideTab() {
-  const tl = [['07:00','Ξύπνημα, 500 ml νερό, ζύγισμα μετά την τουαλέτα'],['07:30','Πρωινό με 30–40 g πρωτεΐνη'],['08:15','10′ περπάτημα στο φως της μέρας'],['10:30','Καφές, νερό· τελευταίος καφές ως τις 14:00'],['13:00','Μεσημεριανό: πρωτεΐνη, άμυλο, λαχανικά'],['16:30','Σνακ ή φρούτο πριν από το γυμναστήριο'],['18:00','Γυμναστήριο (Δευ/Τετ/Παρ) ή 40′ γρήγορο περπάτημα'],['19:10','Shake πρωτεΐνης μετά το γυμναστήριο'],['20:00','Βραδινό, τουλάχιστον 2,5 ώρες πριν τον ύπνο'],['22:30','Οθόνες χαμηλά, χαλάρωμα, ετοιμασία για αύριο'],['23:00','Ύπνος· στόχος 7,5–8 ώρες']];
-  return `<section class="sec"><h2>Μια καλή μέρα</h2><p class="small muted">Παράδειγμα για δουλειά 09:00–17:00. Μετακίνησε όλο το πρόγραμμα αν το ωράριό σου είναι διαφορετικό.</p>
-    <div class="scroll-x"><table class="tbl mp-tl"><tbody>${tl.map(([a, b]) => `<tr><td>${a}</td><td>${b}</td></tr>`).join('')}</tbody></table></div></section>
-  <section class="sec"><h2>Καθημερινές συνήθειες</h2><ul class="small">
-    <li>Ζύγισμα κάθε πρωί· κρίνεις μόνο από τον μέσο όρο 7 ημερών.</li><li>2,5–3 L νερό την ημέρα, +0,75 L τις μέρες γυμναστηρίου.</li>
-    <li>8.000–10.000 βήματα. Καίνε λίπος χωρίς να ανοίγουν την όρεξη.</li><li>Πρωτεΐνη σε κάθε γεύμα, και πρώτα αυτή και η σαλάτα στο πιάτο.</li>
-    <li>Meal prep Κυριακή και Τετάρτη: ψητό κοτόπουλο, ρύζι ή πατάτες, όσπρια σε τάπερ για 3 μέρες.</li><li>Μία «κακή» μέρα δεν χαλάει τίποτα· συνεχίζεις κανονικά από το επόμενο γεύμα.</li></ul></section>
-  <section class="sec"><h2>Ύπνος</h2><ul class="small"><li>Ίδια ώρα ξυπνήματος κάθε μέρα (±30′ το Σαββατοκύριακο).</li><li>Καφεΐνη μέχρι τις 14:00.</li><li>Δωμάτιο σκοτεινό, 18–20 °C, κινητό εκτός κρεβατιού.</li><li>Το αλκοόλ χαλάει τον ύπνο και έχει πολλές θερμίδες.</li><li>Με λιγότερο από 7 ώρες ύπνο η πείνα ανεβαίνει και η αποκατάσταση πέφτει.</li></ul></section>
-  <section class="sec"><h2>Συμπληρώματα (προαιρετικά)</h2><div class="scroll-x"><table class="tbl"><thead><tr><th>Τι</th><th>Πόσο</th><th>Γιατί</th></tr></thead><tbody>
-    <tr><td>Whey isolate</td><td>1 μεζούρα (25–30 g πρωτεΐνη)</td><td>Βοηθά να φτάσεις τον στόχο πρωτεΐνης με λίγες θερμίδες. Το isolate έχει ελάχιστη λακτόζη.</td></tr>
-    <tr><td>Κρεατίνη μονοϋδρική</td><td>3–5 g κάθε μέρα, χωρίς φάση φόρτωσης</td><td>Κρατά δύναμη και μύες σε έλλειμμα. Προσθέτει 1–2 kg νερό στους μύες στην αρχή, όχι λίπος.</td></tr>
-    <tr><td>Psyllium</td><td>5 g σε μεγάλο ποτήρι νερό</td><td>+4 g φυτικές ίνες, χορτασμός, καλύτερη λειτουργία εντέρου. 2 ώρες μακριά από φάρμακα.</td></tr>
-    <tr><td>Βιταμίνη D3</td><td>1.000–2.000 IU</td><td>Μόνο αν η εξέταση αίματος δείξει χαμηλή τιμή.</td></tr></tbody></table></div>
-    <p class="note">Απόφυγε λιποδιαλύτες, «θερμογενή» και pre-workout με πολλή καφεΐνη. Αν παίρνεις φάρμακα, ειδικά διεγερτικά ή αντικαταθλιπτικά, ρώτα γιατρό ή φαρμακοποιό πριν από οποιοδήποτε συμπλήρωμα. Η εφαρμογή δεν αντικαθιστά ιατρική συμβουλή.</p></section>
-  <section class="sec"><h2>Πώς ελέγχεις την πρόοδο</h2><ol class="small"><li>Κάθε πρωί ζύγισμα και καταγραφή.</li><li>Κάθε Κυριακή μέτρηση μέσης στο ύψος του αφαλού.</li><li>Κάθε 2 εβδομάδες φωτογραφίες μπροστά, πλάγια, πίσω, με ίδιο φως.</li><li>Μετά από 3–4 εβδομάδες, αν ο μέσος όρος πέφτει λιγότερο από 0,4 kg την εβδομάδα και η μέση δεν μικραίνει, πρόσθεσε 2.000 βήματα πριν κόψεις φαγητό.</li><li>Η πρώτη εβδομάδα δείχνει απότομη πτώση από νερό· από τη δεύτερη και μετά μετράει η τάση.</li></ol></section>`;
+  const tl = [['07:00','Ξύπνημα, 500 ml νερό, ζύγισμα μετά την τουαλέτα'],['07:30','Πρωινό με 30–40 g πρωτεΐνη'],['08:15','10′ περπάτημα στο φως της μέρας'],['10:30','Καφές και νερό· τελευταίος καφές ως τις 14:00'],['13:00','Μεσημεριανό: πρωτεΐνη, άμυλο, λαχανικά'],['16:30','Σνακ ή φρούτο πριν από το γυμναστήριο'],['18:00','Γυμναστήριο (Δευ/Τετ/Παρ) ή 40′ γρήγορο περπάτημα'],['19:10','Shake πρωτεΐνης μετά το γυμναστήριο'],['20:00','Βραδινό, 2,5 ώρες πριν τον ύπνο'],['22:30','Οθόνες χαμηλά, ετοιμασία για αύριο'],['23:00','Ύπνος· στόχος 7,5–8 ώρες']];
+  const supp = [['Whey isolate','1 μεζούρα, 25–30 g πρωτεΐνη','Πιάνεις τον στόχο πρωτεΐνης με λίγες θερμίδες. Το isolate έχει ελάχιστη λακτόζη.'],['Κρεατίνη μονοϋδρική','3–5 g κάθε μέρα','Κρατά δύναμη και μύες σε έλλειμμα. Στην αρχή +1–2 kg νερό στους μύες, όχι λίπος.'],['Psyllium','5 g σε μεγάλο ποτήρι νερό','+4 g φυτικές ίνες, χορτασμός, καλύτερο έντερο. 2 ώρες μακριά από φάρμακα.'],['Βιταμίνη D3','1.000–2.000 IU','Μόνο αν η εξέταση αίματος δείξει χαμηλή τιμή.']];
+  return `<section class="sec"><h2>Μια καλή μέρα</h2><p class="small muted" style="margin-top:-6px">Για δουλειά 09:00–17:00. Μετακίνησε όλο το πρόγραμμα αν το ωράριό σου διαφέρει.</p>
+    <ul class="list inner mp-tl" style="border-top:0">${tl.map(([a, b]) => `<li><div class="item"><span class="mp-time">${a}</span><span class="grow small">${b}</span></div></li>`).join('')}</ul></section>
+  <section class="sec"><h2>Καθημερινές συνήθειες</h2><ul class="guide">
+    <li>Ζύγισμα κάθε πρωί· κρίνεις μόνο από τον μέσο όρο 7 ημερών.</li><li>2,5–3 L νερό, +0,75 L τις μέρες γυμναστηρίου.</li>
+    <li>8.000–10.000 βήματα. Καίνε λίπος χωρίς να ανοίγουν την όρεξη.</li><li>Πρωτεΐνη σε κάθε γεύμα, και αυτή και η σαλάτα πρώτα στο πιάτο.</li>
+    <li>Meal prep Κυριακή και Τετάρτη: κοτόπουλο, ρύζι ή πατάτες, όσπρια σε τάπερ για 3 μέρες.</li><li>Μία «κακή» μέρα δεν χαλάει τίποτα· συνεχίζεις από το επόμενο γεύμα.</li></ul></section>
+  <section class="sec"><h2>Ύπνος</h2><ul class="guide"><li>Ίδια ώρα ξυπνήματος κάθε μέρα (±30′ το Σαββατοκύριακο).</li><li>Καφεΐνη μέχρι τις 14:00.</li><li>Δωμάτιο σκοτεινό, 18–20 °C, κινητό εκτός κρεβατιού.</li><li>Το αλκοόλ χαλάει τον ύπνο και έχει πολλές θερμίδες.</li><li>Με λιγότερο από 7 ώρες ύπνο η πείνα ανεβαίνει και η αποκατάσταση πέφτει.</li></ul></section>
+  <section class="sec"><h2>Συμπληρώματα (προαιρετικά)</h2><ul class="list inner" style="border-top:0">${supp.map(([a, b, c]) => `<li><div class="item"><span class="grow"><span class="nm">${a}</span> <span class="sub">· ${b}</span><br><span class="sub">${c}</span></span></div></li>`).join('')}</ul>
+    <p class="note safety">Απόφυγε λιποδιαλύτες, «θερμογενή» και pre-workout με πολλή καφεΐνη. Αν παίρνεις φάρμακα, ειδικά διεγερτικά ή αντικαταθλιπτικά, ρώτα γιατρό ή φαρμακοποιό πριν από οποιοδήποτε συμπλήρωμα.</p></section>
+  <section class="sec"><h2>Πώς ελέγχεις την πρόοδο</h2><ul class="guide"><li>Κάθε πρωί ζύγισμα και καταγραφή.</li><li>Κάθε Κυριακή μέτρηση μέσης στο ύψος του αφαλού.</li><li>Κάθε 2 εβδομάδες φωτογραφίες μπροστά, πλάγια, πίσω, με ίδιο φως.</li><li>Μετά από 3–4 εβδομάδες, αν ο μέσος όρος πέφτει λιγότερο από 0,4 kg την εβδομάδα και η μέση δεν μικραίνει, πρόσθεσε 2.000 βήματα πριν κόψεις φαγητό.</li><li>Η πρώτη εβδομάδα δείχνει πτώση από νερό· από τη δεύτερη μετράει η τάση.</li></ul></section>`;
 }
 function viewPlan() {
   const tab = UI.mpTab || 'foods';
@@ -408,7 +424,12 @@ document.addEventListener('click', e => {
   if (act !== 'mpClear') UI.mpArmed = false;
   switch (act) {
     case 'mpTab': UI.mpTab = a.dataset.tab; render(); window.scrollTo(0, 0); break;
-    case 'mpPick': { const id = a.dataset.id, s = new Set(st.picks); s.has(id) ? s.delete(id) : s.add(id); st.picks = [...s]; mpSave(st); a.setAttribute('aria-pressed', s.has(id)); const c = mpCounts(st.picks); const bal = document.querySelector('.mp-bal'); if (bal) bal.outerHTML = `<div class="mp-bal">${Object.keys(MP_NEED).map(k => `<div class="${c[k] < MP_NEED[k] ? 'low' : ''}"><span>${MP_GLABEL[k]}</span><b>${c[k]}</b><span>${c[k] < MP_NEED[k] ? `θέλει ${MP_NEED[k] - c[k]} ακόμα` : 'αρκετά'}</span></div>`).join('')}</div>`; break; }
+    case 'mpPick': { const id = a.dataset.id, s = new Set(st.picks); s.has(id) ? s.delete(id) : s.add(id); st.picks = [...s]; mpSave(st); a.setAttribute('aria-pressed', s.has(id));
+      const bal = document.querySelector('.mp-bal'); if (bal) bal.outerHTML = mpBalHTML(mpCounts(st.picks));
+      for (const el of document.querySelectorAll('#mpCount,#mpN')) el.textContent = st.picks.length;
+      if (navigator.vibrate) try { navigator.vibrate(8); } catch (_) {} break; }
+    case 'mpEditT': UI.mpEditT = !UI.mpEditT; mpRerender(true); break;
+    case 'mpSet': UI.mpSet = !UI.mpSet; mpRerender(true); break;
     case 'mpCat': UI.mpCat = a.dataset.cat || null; mpRerender(true); break;
     case 'mpOnly': UI.mpOnly = !UI.mpOnly; mpRerender(true); break;
     case 'mpStarter': { const byId = foods().byId; st.picks = [...new Set([...st.picks, ...MP_DEFAULT_PICKS.filter(id => byId.has(id))])]; mpSave(st); toast('Προστέθηκε η βασική λίστα. Πρόσθεσε ή βγάλε ό,τι θέλεις.'); mpRerender(true); break; }
