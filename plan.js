@@ -93,7 +93,9 @@ const WMU_EXTRA_FOODS = [
   F("gr_dr09","Ρόφημα αμυγδάλου χωρίς ζάχαρη",["almond drink, unsweetened", "alpro"],12,0.4,0,1.1,{"portion": 250, "fiber": 0.3, "cat": "drink"}),
   F("gr_c04","Μαγιονέζα light",["light mayonnaise", "hellmann's light"],291,0.5,7,29,{"portion": 15, "fiber": 0, "cat": "spread"}),
   F("gr_c07","Ξίδι βαλσάμικο",["balsamic vinegar"],90,0.5,22,0,{"portion": 10, "fiber": 0, "cat": "spread"}),
-  F("gr_c08","Σάλτσα σόγιας",["soy sauce"],53,8,5,0.1,{"portion": 15, "fiber": 0, "cat": "spread"})
+  F("gr_c08","Σάλτσα σόγιας",["soy sauce"],53,8,5,0.1,{"portion": 15, "fiber": 0, "cat": "spread"}),
+  F("gr_d31","Kri Kri Super Spoon High Protein με φρούτο",["super spoon", "super spoon φράουλα", "super spoon strawberry", "super spoon ροδάκινο", "super spoon μύρτιλο", "κρι κρι super spoon", "kri kri high protein"],80,8.8,11,0,{"portion": 170, "fiber": 0, "cat": "dairy", "piece": 170}),
+  F("gr_dr10","Dymatize ISO100 (whey isolate)",["dymatize", "iso100", "iso 100", "ντιματάιζ"],375,78,6.3,3.1,{"portion": 32, "fiber": 0, "cat": "other", "supp": true, "piece": 32}),
 ];
 /* plan.js — «Πλάνο»: εβδομαδιαίο πλάνο γευμάτων από τα φαγητά που επιλέγεις,
    έτοιμο πρόγραμμα 3 ολόσωμων προπονήσεων και οδηγός (συνήθειες, ύπνος, συμπληρώματα).

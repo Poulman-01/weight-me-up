@@ -2,7 +2,7 @@
 <html lang="el">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-qHqauweSD92gTfCFHGxOYJYPu5MX0uBCnivKselrmrc=' 'sha256-HYkg+4uzTPdo34Tq80vhJbICYDzuI+m7vNuWcJz4a4U=' 'sha256-RfPA1QR6c0Leq70jBh8GW6X0MimecEUlV20rfM0JRz4=' 'sha256-LZEr3DtSyzORJMU2NMrVMSuwQATvBIRFi3moVQhrZU8='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://images.openfoodfacts.org https://static.openfoodfacts.org https://world.openfoodfacts.org; connect-src 'self' https://world.openfoodfacts.org; worker-src 'self'; manifest-src 'self'; media-src 'self' blob: mediastream:; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-qHqauweSD92gTfCFHGxOYJYPu5MX0uBCnivKselrmrc=' 'sha256-HYkg+4uzTPdo34Tq80vhJbICYDzuI+m7vNuWcJz4a4U=' 'sha256-RfPA1QR6c0Leq70jBh8GW6X0MimecEUlV20rfM0JRz4=' 'sha256-GvpPDyuPaJBdoxlC6nm46OjUNEJZrJTQOVVCONqwp1c='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://images.openfoodfacts.org https://static.openfoodfacts.org https://world.openfoodfacts.org; connect-src 'self' https://world.openfoodfacts.org; worker-src 'self'; manifest-src 'self'; media-src 'self' blob: mediastream:; object-src 'none'; base-uri 'self'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#F3F5F8" media="(prefers-color-scheme: light)">
@@ -2110,7 +2110,7 @@ const fmt = (x, d = 0) => (x === null || x === undefined || isNaN(x)) ? '–' : 
 const sfmt = (x, d = 0) => { if (x === null || x === undefined || isNaN(x)) return '–'; const r = Math.round(x * 10 ** d) / 10 ** d; return (r > 0 ? '+' : r < 0 ? '−' : '') + fmt(Math.abs(r), d); };
 const numIn = Reliability.num;
 /* Έκδοση εφαρμογής: εμφανίζεται στο Προφίλ (κεφαλίδα και «Κατάσταση»). */
-const APP_VERSION = '1.4.0';
+const APP_VERSION = '1.4.1';
 /* Πεδία βημάτων/θερμίδων: «10.000» με ελληνικό διαχωριστικό χιλιάδων σημαίνει 10000, όχι 10. */
 const intIn = v => { const s = String(v ?? '').trim(); return /^\d{1,3}(?:\.\d{3})+$/.test(s) ? Number(s.replace(/\./g, '')) : numIn(s); };
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
